@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map;
+      var path;
+      var dash = {
+      	path: 'M 0,-1 0,1',
+      	strokeOpacity: 0,
+      	scale:4,
+      	strokeColor: '#FFFFFF'
+      };
+
+
+      // This example creates a 2-pixel-wide red polyline showing the path of William
+      // Kingsford Smith's first trans-Pacific flight between Oakland, CA, and
+      // Brisbane, Australia.
+
+      function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: 29.8621518, lng:77.894436},
+          mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+
+        points = [
+          {lat: 29.772, lng: 77.214},
+          {lat: 29.291, lng: 77.821},
+          {lat: 29.142, lng: 77.31},
+          {lat: 29.467, lng: 77.027}
+        ];
+        path = new google.maps.Polyline({
+          path: points,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1,
+          strokeWeight: 2,
+          icons:[{icon: dash, offset:0}]
+        });
+        path.setMap(map);
+        animatePath(path);
+          
+        
+      }
+      function animatePath(line) {
+    	var count = 0;
+    	var count2 = 0;
+    	window.setInterval(function() {
+      		count = (count + 1) % 200;
+      		count2 = (count2 + 1) % 20;
+			var icons = line.get('icons');
+      		icons[0].offset = (count / 2) + '%';
+      		
+      		line.set('icons', icons);
+  		}, 20);
+	}
+		path.get('icons')[0].icon['strokeOpacity'] = 1;
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+    </script>
+  </body>
+</html>
